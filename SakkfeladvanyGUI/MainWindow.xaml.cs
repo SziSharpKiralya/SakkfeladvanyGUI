@@ -18,7 +18,10 @@ namespace SakkfeladvanyGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+		int rows;
+		int columns;
+
+		public MainWindow()
         {
             InitializeComponent();
 			List<int> nums = new List<int> { 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -32,8 +35,6 @@ namespace SakkfeladvanyGUI
 
 		private void CheckCells()
 		{
-			int rows = (int)cb_col.SelectedItem;
-			int columns = (int)cb_row.SelectedItem;
 			int checkedCount = 0;
 			int sz = 0;
 
@@ -54,27 +55,28 @@ namespace SakkfeladvanyGUI
 				}
 			}
 
-			lbl_info.Content = $"Checked: {checkedCount} / {columns}";
+			if (checkedCount == rows)
+			{
+				lbl_info.Content = "Feladvány megoldva!";
+			}
+			else
+			{
+				lbl_info.Content = "Minden sorban helyezzen el egy királynőt!";
+			}
 		}
 
 		private void DeleteAllCells()
 		{
-			for (int i = 0; i < grid_tabla.Children.Count; i++)
-			{
-				if (grid_tabla.Children[i] is TextBox)
-				{
-					grid_tabla.Children.Remove(grid_tabla.Children[i] as TextBox);
-				}
-			}
+			(grid_tabla.Children).Clear();
 		}
 
 		private void CreateCells()
 		{
-			int rowCount = (int)cb_row.SelectedItem;
-			int colCount = (int)cb_col.SelectedItem;
-			for (int r = 0; r < rowCount; r++)
+			rows = (int)cb_row.SelectedItem;
+			columns = (int)cb_col.SelectedItem;
+			for (int r = 0; r < rows; r++)
 			{
-				for (int c = 0; c < colCount; c++)
+				for (int c = 0; c < columns; c++)
 				{
 					CheckBox checkbox = new CheckBox();
 					Grid.SetRow(checkbox, r);
@@ -110,6 +112,7 @@ namespace SakkfeladvanyGUI
 		{
 			DeleteAllCells();
 			CreateCells();
+			CheckCells();
 		}
 	}
 }
