@@ -20,5 +20,20 @@ namespace SakkfeladvanyGUI
         {
             InitializeComponent();
         }
-    }
+
+		private void background_drag(object sender, MouseButtonEventArgs e)
+		{
+			DragMove();
+		}
+
+		private void btnClose_Click(object sender, RoutedEventArgs e)
+		{
+            Close();
+		}
+
+		private void btnCreate_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+	}
 }
