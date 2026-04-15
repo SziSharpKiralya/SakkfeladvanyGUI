@@ -19,7 +19,15 @@ namespace SakkfeladvanyGUI
         public MainWindow()
         {
             InitializeComponent();
-        }
+			List<string> nums = new List<string> { "3", "4", "5", "6", "7", "8", "9", "10" };
+
+			cb_row.ItemsSource = nums;
+			cb_col.ItemsSource = nums;
+
+			// 3. Kezdeti érték beállítása
+			cb_row.SelectedItem = "8";
+			cb_col.SelectedItem = "8";
+		}
 
 		private void background_drag(object sender, MouseButtonEventArgs e)
 		{
