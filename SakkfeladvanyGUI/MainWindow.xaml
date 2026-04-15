@@ -23,7 +23,7 @@
 	</Window.Resources>
 
 	<Border Background="{StaticResource Main}"
-		MouseLeftButtonDown="background_drag">
+		MouseLeftButtonDown="background_Drag">
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40" />
@@ -147,7 +147,7 @@
 					<ColumnDefinition Width="*" />
 				</Grid.ColumnDefinitions>
 			</Grid>
-			<Label 
+			<Label x:Name="lbl_info"
 				Grid.Row="4"
 				Grid.Column="0"
 				Content="Minden sorban helyezzen el egy királynőt!"

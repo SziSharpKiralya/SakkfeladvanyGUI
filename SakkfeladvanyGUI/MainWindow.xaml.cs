@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Data.Common;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,17 +21,82 @@ namespace SakkfeladvanyGUI
         public MainWindow()
         {
             InitializeComponent();
-			List<string> nums = new List<string> { "3", "4", "5", "6", "7", "8", "9", "10" };
+			List<int> nums = new List<int> { 3, 4, 5, 6, 7, 8, 9, 10 };
 
 			cb_row.ItemsSource = nums;
 			cb_col.ItemsSource = nums;
 
-			// 3. Kezdeti érték beállítása
-			cb_row.SelectedItem = "8";
-			cb_col.SelectedItem = "8";
+			cb_row.SelectedItem = 8;
+			cb_col.SelectedItem = 8;
 		}
 
-		private void background_drag(object sender, MouseButtonEventArgs e)
+		private void CheckCells()
+		{
+			int rows = (int)cb_col.SelectedItem;
+			int columns = (int)cb_row.SelectedItem;
+			int checkedCount = 0;
+			int sz = 0;
+
+			foreach (var item in grid_tabla.Children)
+			{
+				if (item is CheckBox)
+				{
+					CheckBox checkbox = (CheckBox)item;
+					if (checkbox.IsChecked == true)
+					{
+						checkedCount++;
+						sz++;
+					}
+				}
+				if (sz == columns)
+				{
+					sz = 0;
+				}
+			}
+
+			lbl_info.Content = $"Checked: {checkedCount} / {columns}";
+		}
+
+		private void DeleteAllCells()
+		{
+			for (int i = 0; i < grid_tabla.Children.Count; i++)
+			{
+				if (grid_tabla.Children[i] is TextBox)
+				{
+					grid_tabla.Children.Remove(grid_tabla.Children[i] as TextBox);
+				}
+			}
+		}
+
+		private void CreateCells()
+		{
+			int rowCount = (int)cb_row.SelectedItem;
+			int colCount = (int)cb_col.SelectedItem;
+			for (int r = 0; r < rowCount; r++)
+			{
+				for (int c = 0; c < colCount; c++)
+				{
+					CheckBox checkbox = new CheckBox();
+					Grid.SetRow(checkbox, r);
+					Grid.SetColumn(checkbox, c);
+					checkbox.IsChecked = false;
+					checkbox.VerticalAlignment = VerticalAlignment.Center;
+					checkbox.HorizontalAlignment = HorizontalAlignment.Center;
+					checkbox.VerticalContentAlignment = VerticalAlignment.Center;
+					checkbox.HorizontalContentAlignment = HorizontalAlignment.Center;
+					grid_tabla.Children.Add(checkbox);
+					checkbox.Checked += checkbox_Check;
+					checkbox.Unchecked += checkbox_Check;
+				}
+			}
+		}
+
+		private void checkbox_Check(object sender, RoutedEventArgs e)
+		{
+			CheckCells();
+		}
+
+		private void background_Drag(object sender, MouseButtonEventArgs e)
 		{
 			DragMove();
 		}
@@ -41,7 +108,8 @@ namespace SakkfeladvanyGUI
 
 		private void btnCreate_Click(object sender, RoutedEventArgs e)
 		{
-
+			DeleteAllCells();
+			CreateCells();
 		}
 	}
 }
